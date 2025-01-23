@@ -28,6 +28,12 @@ export default function Page() {
   useEffect(() => {
     const getUsers = async () => {
       try {
+        if (typeof window != "undefined") {
+          const res = await axios.get("/api/category");
+          if (res.data.success) {
+            setUsers(res.data.categories);
+          }
+        }
         const res = await axios.get("/api/category");
         if (res.data.success) {
           setUsers(res.data.categories);

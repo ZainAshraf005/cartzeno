@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { CopyIcon } from "lucide-react";
@@ -8,33 +8,47 @@ import { useErrorHandler } from "@/hooks/use-error";
 
 export default function Page() {
   const [password, setPassword] = useState("");
+  const [isBrowser, setIsBrowser] = useState(false);
   const { handleError } = useErrorHandler();
   const router = useRouter();
   const { toast } = useToast();
   const adminPassword = "ECOM_ADMIN";
 
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password === adminPassword) {
-      document.cookie = "admin-auth=authenticated; path=/";
-      router.push("/admin");
-    } else {
-      toast({
-        title: "Invalid Password",
-        description: "you are redirecting to home page",
-        duration: 3000,
-      });
-      router.push("/");
+    if (isBrowser) {
+      if (password === adminPassword) {
+        document.cookie = "admin-auth=authenticated; path=/";
+        router.push("/admin");
+      } else {
+        toast({
+          title: "Invalid Password",
+          description: "you are redirecting to home page",
+          duration: 3000,
+        });
+        router.push("/");
+      }
     }
   };
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText("ECOM_ADMIN");
-      toast({
-        description: "password copied, now just paste",
-      });
+      if (isBrowser && navigator.clipboard) {
+        await navigator.clipboard.writeText(adminPassword);
+        toast({
+          description: "password copied, now just paste",
+        });
+      } else {
+        toast({
+          description: "Clipboard not supported",
+          variant: "destructive"
+        });
+      }
     } catch (error: unknown) {
       handleError(error);
     }

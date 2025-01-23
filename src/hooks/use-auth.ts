@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState, useEffect } from "react";
 import { useErrorHandler } from "./use-error";
 import { useToast } from "./use-toast";
 import { useRouter } from "next/navigation";
@@ -6,14 +7,20 @@ import { useAppDispatch } from "./redux-hooks";
 import { clearAuthUser } from "@/features/user/user-slice";
 
 export const useAuth = () => {
+  const [isBrowser, setIsBrowser] = useState(false);
   const { handleError } = useErrorHandler();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
   const router = useRouter();
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
   const logoutUser = async () => {
     try {
       const response = await axios.get("/api/auth/signout");
-      if (response.data.success) {
+      if (isBrowser && response.data.success) {
         toast({
           title: "Logged Out",
           description: "You have been logged out",
@@ -27,5 +34,6 @@ export const useAuth = () => {
       handleError(error);
     }
   };
+
   return { logoutUser };
 };

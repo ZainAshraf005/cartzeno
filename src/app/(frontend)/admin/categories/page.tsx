@@ -28,12 +28,7 @@ export default function Page() {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        if (typeof window != "undefined") {
-          const res = await axios.get("/api/category");
-          if (res.data.success) {
-            setUsers(res.data.categories);
-          }
-        }
+        
         const res = await axios.get("/api/category");
         if (res.data.success) {
           setUsers(res.data.categories);
@@ -50,6 +45,8 @@ export default function Page() {
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (typeof window != "undefined"){
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
@@ -104,5 +101,5 @@ export default function Page() {
         </TableBody>
       </Table>
     </div>
-  );
+  );}
 }

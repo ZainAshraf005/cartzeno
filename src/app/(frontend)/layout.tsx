@@ -10,9 +10,11 @@ export default function HomeLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <div className="font-poppins">{children}</div>
-    </>
-  );
+  if (typeof window != "undefined") {
+    return (
+      <>
+        <div className="font-poppins">{children}</div>
+      </>
+    );
+  }
 }

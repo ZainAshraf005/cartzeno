@@ -34,27 +34,31 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // Track the active path
-  const [activePath, setActivePath] = useState<string>(
-    window.location.pathname
-  );
+  // Track the active path (initial state set to empty string to avoid SSR issues)
+  const [activePath, setActivePath] = useState<string>("");
 
-  // Effect to update active path when navigating
+  // Ensure this effect only runs on the client
   useEffect(() => {
-    const handleRouteChange = () => {
+    if (typeof window !== "undefined") {
       setActivePath(window.location.pathname);
-    };
 
-    window.addEventListener("popstate", handleRouteChange);
-    return () => {
-      window.removeEventListener("popstate", handleRouteChange);
-    };
+      const handleRouteChange = () => {
+        setActivePath(window.location.pathname);
+      };
+
+      window.addEventListener("popstate", handleRouteChange);
+      return () => {
+        window.removeEventListener("popstate", handleRouteChange);
+      };
+    }
   }, []);
 
   // Function to handle click and update the active path
   const handleLinkClick = (url: string) => {
     setActivePath(url); // Update the active path manually
-    window.history.pushState(null, "", url); // Update URL without page reload
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", url); // Update URL without page reload
+    }
   };
 
   return (

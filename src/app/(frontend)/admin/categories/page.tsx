@@ -24,11 +24,14 @@ export default function Page() {
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const { handleError } = useErrorHandler();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // Ensure the component only runs on the client
+    setIsClient(true);
+
     const getUsers = async () => {
       try {
-        
         const res = await axios.get("/api/category");
         if (res.data.success) {
           setUsers(res.data.categories);
@@ -39,14 +42,17 @@ export default function Page() {
     };
 
     getUsers();
-  }, []);
+  }, [handleError]);
 
   // Filtered users based on search query
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (typeof window != "undefined"){
+  if (!isClient) {
+    // Return null to avoid rendering on the server
+    return null;
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
@@ -101,5 +107,5 @@ export default function Page() {
         </TableBody>
       </Table>
     </div>
-  );}
+  );
 }

@@ -75,7 +75,3 @@ We welcome contributions from the community. Please feel free to fork the reposi
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
 ```
-
-This is the actual `readme.md` file content you can save as `readme.md` in your project's root directory.
-
-I apologize for the previous incorrect response. I am still under development and learning to be more accurate. Thanks for pointing out my mistake!

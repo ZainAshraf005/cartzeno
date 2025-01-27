@@ -24,20 +24,20 @@ This is a modern e-commerce application built with Next.js 15, TypeScript, Tailw
 1. Clone this repository:
 
    ```bash
-   git clone [https://github.com/your-username/your-project-name.git](https://github.com/your-username/your-project-name.git)
+   git clone https://github.com/ZainAshraf005/cartzeno.git
    ```
 
 2. Install dependencies:
 
    ```bash
    cd your-project-name
-   npm install
+   pnpm install
    ```
 
 3. Start the development server:
 
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
    This will start the development server on http://localhost:3000 by default.
@@ -55,7 +55,7 @@ To deploy your application to production, you can follow these steps:
 1. Build the production-ready application:
 
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 2. Host the built files on a web server.
